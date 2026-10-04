@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Crosswind Component Calculator</title>
+<style>
+:root{--bg:#f3f5f8;--panel:#fff;--ink:#16202c;--mute:#667587;--line:#d5dce5;--map:#eaf0f6;--acc:#d9480f;--ok:#1b8a4b;--bad:#c92a2a;--card:#1b2430;--cardink:#e8eef5;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e131a;--panel:#161d27;--ink:#e6ecf3;--mute:#8596a9;--line:#263140;--map:#0b1017;--acc:#ffa94d;--ok:#51cf66;--bad:#ff6b6b;--card:#0a0e14;--cardink:#e8eef5}}
+:root[data-theme="dark"]{--bg:#0e131a;--panel:#161d27;--ink:#e6ecf3;--mute:#8596a9;--line:#263140;--map:#0b1017;--acc:#ffa94d;--ok:#51cf66;--bad:#ff6b6b;--card:#0a0e14;--cardink:#e8eef5}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.top{display:flex;flex-wrap:wrap;gap:6px;padding:10px 14px 0;max-width:1500px;margin:auto}.top a{color:var(--mute);text-decoration:none;font-size:13px;padding:5px 14px;border:1px solid var(--line);border-radius:99px;background:var(--panel)}.top a:hover,.top a.on{border-color:var(--acc)}.top a.on{color:var(--ink)}
+header{padding:14px 18px;display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px}
+h1{font-size:20px;margin:0;letter-spacing:.3px}
+header span{color:var(--mute);font-size:13px}
+.grid{display:grid;grid-template-columns:minmax(0,2.2fr) minmax(300px,380px);gap:14px;padding:0 14px 18px;max-width:1500px;margin:auto}
+@media(max-width:820px){.grid{grid-template-columns:1fr}}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px}
+#map{width:100%;aspect-ratio:4/3;max-height:88vh;display:block;border-radius:8px;background:var(--map)}
+.hint{color:var(--mute);font-size:12px;margin:8px 2px 0}
+#alt{width:100%;max-width:340px;display:block;margin:0 auto}
+.read{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:10px 0 0}
+.read div{background:var(--bg);border-radius:8px;padding:6px 8px;text-align:center}
+.read b{display:block;font-size:18px;font-variant-numeric:tabular-nums}
+.read small{color:var(--mute);font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+.ctl{margin:10px 0}
+.ctl label{display:flex;justify-content:space-between;font-size:13px;color:var(--mute);margin-bottom:4px}
+.ctl label output{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+.row{display:flex;gap:6px;align-items:center}
+input[type=range]{flex:1;accent-color:var(--acc);min-width:0}
+button{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:5px 10px;cursor:pointer}
+button:hover{border-color:var(--acc)}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+canvas{width:100%;display:block;border-radius:8px;background:var(--map)}.pair{display:flex;gap:10px;flex-wrap:wrap}.pair svg{flex:1 1 260px;max-width:340px;margin:auto;display:block}.ind{width:100%;max-width:340px;display:block;margin:0 auto}select{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:5px 10px;width:100%}input[type=checkbox]{accent-color:var(--acc)}.ctl label.ck{justify-content:flex-start;gap:8px;color:var(--ink)}
+.top.sub{padding-top:6px}.top.sub a{font-size:12px;padding:3px 11px}.tt{font-size:15px;font-weight:600;margin:0 0 8px}.lamps{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}.lamps span{padding:5px 10px;border-radius:6px;border:1px solid var(--line);font-size:12px;font-weight:700;color:var(--mute)}.lamps span.am{background:#f59f00;color:#000;border-color:#f59f00}.lamps span.rd{background:var(--bad);color:#fff;border-color:var(--bad)}.wbt{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px}.wbt td,.wbt th{padding:4px 8px;border-bottom:1px solid var(--line);text-align:right}.wbt th:first-child,.wbt td:first-child{text-align:left}.wbt th{color:var(--mute);font-weight:500}pre.m{background:var(--bg);border-radius:8px;padding:8px;font-size:11px;line-height:1.4;overflow:auto;margin:8px 0 0;white-space:pre-wrap}input[type=text]{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:5px 10px;width:100%}.sq{display:flex;gap:8px;justify-content:center;margin:8px 0}.sq div{display:flex;flex-direction:column;align-items:center;gap:4px}.sq b{font-size:28px;font-variant-numeric:tabular-nums;background:var(--card);color:var(--acc);border-radius:6px;padding:2px 10px}.sq button{padding:0 10px}
+.zt{position:absolute;top:8px;right:8px;display:flex;flex-direction:column;gap:6px}.zt button{width:34px;height:34px;padding:0;font-size:17px;background:var(--panel);border-radius:8px}.zl{position:absolute;left:10px;bottom:8px;font-size:12px;color:var(--mute);pointer-events:none}
+</style></head><body>
+<nav class="top"><a href="index.html">Home</a><a href="vor.html">Navigation</a><a href="altimeter.html">Flight Instruments</a><a href="windtri.html" class="on">Performance &amp; Planning</a><a href="gpws.html">Safety &amp; Alerting</a><a href="radar.html">Surveillance &amp; ATC</a><a href="practice.html">Exam Practice</a></nav><nav class="top sub"><a href="windtri.html">Wind Triangle</a><a href="xwind.html" class="on">Crosswind</a><a href="densalt.html">Density Altitude</a><a href="wb.html">Weight &amp; Balance</a></nav>
+<header><h1>⇆ Crosswind Component Calculator</h1><span>Headwind, tailwind and crosswind on any runway · rule-of-thumb check</span></header>
+<div class="grid"><div class="box"><p class="tt" id="rwn"></p><canvas id="map" style="aspect-ratio:1/1;max-height:80vh"></canvas>
+<p class="hint">Runway heading is up. The wind arrow is split into a component along the runway (head/tail wind) and across it (crosswind): headwind = speed × cos(angle), crosswind = speed × sin(angle). The rule of thumb uses 1/3, 1/2, 3/4 and full wind speed for about 20°, 30°, 45° and 60°+ off the runway. Dashed lines mark the crosswind limit.</p></div><div class="box"><div class="read"><div><small>Wind</small><b id="qW">--</b></div><div><small>Head / tail</small><b id="qH">--</b></div><div><small>Crosswind</small><b id="qX">--</b></div><div><small>Wind angle</small><b id="qA">--</b></div><div><small>Gust crosswind</small><b id="qG">--</b></div><div><small>Rule of thumb</small><b id="qR">--</b></div><div><small>Limit used</small><b id="qL">--</b></div><div><small>Verdict</small><b id="qV" style="font-size:13px;line-height:26px">--</b></div></div><div class="ctl"><label>Runway number <output id="o_rw" data-u=""></output></label><div class="row"><button data-d="rw:-1">−1</button><input type="range" id="rw" min="1" max="36" step="1" value="9"><button data-d="rw:1">+1</button></div></div><div class="ctl"><label>Wind from <output id="o_wd" data-u="°" data-p="1"></output></label><div class="row"><button data-d="wd:-10">−10</button><button data-d="wd:-1">−1</button><input type="range" id="wd" min="0" max="359" step="1" value="60" data-w="1"><button data-d="wd:1">+1</button><button data-d="wd:10">+10</button></div></div><div class="ctl"><label>Wind speed <output id="o_ws" data-u=" kt"></output></label><input type="range" id="ws" min="0" max="60" step="1" value="20" style="width:100%"></div><div class="ctl"><label>Gust (extra kt) <output id="o_gu" data-u=" kt"></output></label><input type="range" id="gu" min="0" max="30" step="1" value="0" style="width:100%"></div><div class="ctl"><label>Aircraft crosswind limit <output id="o_lim" data-u=" kt"></output></label><input type="range" id="lim" min="5" max="40" step="1" value="15" style="width:100%"></div><div class="btns"><button id="rnd">New random wind</button></div></div></div>
+<script>
+const $=id=>document.getElementById(id),n360=a=>((a%360)+360)%360,n180=a=>{a=n360(a);return a>180?a-360:a},rad=d=>d*Math.PI/180,cl=(v,a,b)=>Math.max(a,Math.min(b,v)),pad=v=>String(Math.round(n360(v))%360).padStart(3,'0');
+const cssv=()=>{const cs=getComputedStyle(document.documentElement);return k=>cs.getPropertyValue(k).trim()};
+const T=(id,v,c)=>{const e=$(id);e.textContent=v;e.style.color=c||''};
+const turn=(h,t,sd)=>{const d=n180(t-h),s=3*sd;return n360(Math.abs(d)<=s?t:h+Math.sign(d)*s)};
+function zoomify(cv,ctx0,o){const z={k:1,x:0,y:0,moved:false},P=new Map();let pd=0,lb=null,fb=null;const setFo=v=>{z.fo=v;if(fb){fb.style.background=v?'var(--acc)':'var(--panel)';fb.style.color=v?'#fff':''}};
+const ctx=new Proxy(ctx0,{get(t,k){if(k==='__z')return z.k;if(k==='__f')return(x,y)=>{z.fp=[x,y]};if(k==='clearRect')return apply;if(k==='setLineDash')return a=>t.setLineDash(a.map(x=>x/z.k));const v=t[k];return typeof v==='function'?v.bind(t):v},
+set(t,k,v){if(k==='lineWidth')v=v/z.k;else if(k==='font')v=String(v).replace(/(\d+(?:\.\d+)?)px/,(m,n)=>(n/z.k)+'px');t[k]=v;return true}});
+function apply(){const d=devicePixelRatio||1,k=z.k;if(z.fo&&z.fp&&k>1){z.x=-k*(z.fp[0]-o.W/2);z.y=-k*(z.fp[1]-o.H/2);clamp()}ctx0.setTransform(d,0,0,d,0,0);ctx0.clearRect(0,0,o.W,o.H);ctx0.setTransform(d*k,0,0,d*k,d*(o.W/2*(1-k)+z.x),d*(o.H/2*(1-k)+z.y));if(lb)lb.textContent=k>1.01?'×'+k.toFixed(1)+' · drag to pan · double-click to reset':'scroll or pinch to zoom'}
+function clamp(){const mx=o.W/2*(z.k-1),my=o.H/2*(z.k-1);z.x=Math.max(-mx,Math.min(mx,z.x));z.y=Math.max(-my,Math.min(my,z.y));if(z.k<=1.001){z.k=1;z.x=z.y=0}cv.style.touchAction=z.k>1?'none':'pan-y';cv.style.cursor=z.k>1?'grab':''}
+function zoomAt(px,py,f){const k0=z.k,k=Math.max(1,Math.min(12,k0*f)),r=k/k0,cx=o.W/2,cy=o.H/2;z.x=px-cx-r*(px-cx-z.x);z.y=py-cy-r*(py-cy-z.y);z.k=k;clamp()}
+const rc=()=>cv.getBoundingClientRect(),reset=()=>{z.k=1;clamp()},dist=()=>{const[a,b]=[...P.values()];return Math.hypot(a.x-b.x,a.y-b.y)};
+if(cv.parentNode&&document.createElement){const w=document.createElement('div');w.style.position='relative';cv.parentNode.insertBefore(w,cv);w.appendChild(cv);const tb=document.createElement('div');tb.className='zt';
+[['+','Zoom in',1.4],['−','Zoom out',1/1.4],['⟲','Reset view',0]].concat(cv.dataset.fo?[['⌖','Follow the aircraft',-1]]:[]).forEach(([t,ti,f])=>{const b=document.createElement('button');b.type='button';b.textContent=t;b.title=ti;if(f===-1)fb=b;b.onclick=()=>f===-1?setFo(!z.fo):f?zoomAt(o.W/2,o.H/2,f):reset();tb.appendChild(b)});
+w.appendChild(tb);lb=document.createElement('span');lb.className='zl';w.appendChild(lb)}
+cv.addEventListener('wheel',e=>{e.preventDefault();const r=rc();zoomAt(e.clientX-r.left,e.clientY-r.top,Math.exp(-e.deltaY*.0015))},{passive:false});
+cv.addEventListener('pointerdown',e=>{if(cv.setPointerCapture)cv.setPointerCapture(e.pointerId);P.set(e.pointerId,{x:e.clientX,y:e.clientY,sx:e.clientX,sy:e.clientY});z.moved=false;if(P.size===2)pd=dist()});
+cv.addEventListener('pointermove',e=>{const p=P.get(e.pointerId);if(!p)return;
+if(P.size===2){p.x=e.clientX;p.y=e.clientY;const d=dist(),[a,b]=[...P.values()],r=rc();zoomAt((a.x+b.x)/2-r.left,(a.y+b.y)/2-r.top,d/pd);pd=d;z.moved=true;return}
+if(Math.hypot(e.clientX-p.sx,e.clientY-p.sy)>5)z.moved=true;if(z.k>1){if(z.moved&&z.fo)setFo(false);z.x+=e.clientX-p.x;z.y+=e.clientY-p.y;clamp()}p.x=e.clientX;p.y=e.clientY});
+['pointerup','pointercancel'].forEach(t=>cv.addEventListener(t,e=>P.delete(e.pointerId)));
+cv.addEventListener('dblclick',reset);
+window.__zs=window.__zs||[];window.__zs.push(z);window.__zp=window.__zp||{zoomAt,o};
+if(!window.__zk){window.__zk=1;addEventListener('keydown',e=>{if(/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))return;const p=window.__zp,c=p.o;
+if(e.key==='+'||e.key==='=')p.zoomAt(c.W/2,c.H/2,1.4);else if(e.key==='-')p.zoomAt(c.W/2,c.H/2,1/1.4);else if(e.key==='0')p.zoomAt(c.W/2,c.H/2,1e-9)})}
+return{ctx,z,zoomAt}}
+function C(id){const cv=$(id),ctx0=cv.getContext('2d'),o={cv,W:0,H:0,fit(){const d=devicePixelRatio||1;o.W=cv.clientWidth;o.H=cv.clientHeight;cv.width=o.W*d;cv.height=o.H*d;ctx0.setTransform(d,0,0,d,0,0)}};
+o.fit();const zz=cv.dataset.nz?null:zoomify(cv,ctx0,o);o.ctx=zz?zz.ctx:ctx0;if(zz){o.z=zz.z;o.zoomAt=zz.zoomAt}addEventListener('resize',o.fit);return o}
+function ac(ctx,x,y,h,c){if(ctx.__f)ctx.__f(x,y);ctx.save();ctx.translate(x,y);ctx.rotate(rad(h));const k=1/(ctx.__z||1);ctx.scale(k,k);ctx.fillStyle=c;ctx.beginPath();ctx.moveTo(0,-11);ctx.lineTo(7,9);ctx.lineTo(0,5);ctx.lineTo(-7,9);ctx.closePath();ctx.fill();ctx.restore()}
+const syncOut=()=>document.querySelectorAll('output').forEach(o=>{const v=S[o.id.slice(2)];o.textContent=(o.dataset.p?pad(v):v)+(o.dataset.u||'')});
+let S,D,K;
+function wire(keys,reset){K=[...document.querySelectorAll('input[type=range]')].map(e=>e.id);
+K.forEach(k=>$(k).addEventListener('input',e=>S[k]=+e.target.value));
+const nudge=(k,d)=>{const el=$(k);S[k]=el.dataset.w?n360(Math.round(S[k])+d):cl(S[k]+d,+el.min,+el.max);el.value=S[k]};
+document.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{const[k,d]=b.dataset.d.split(':');nudge(k,+d)});
+$('pause').onclick=()=>{if(S.stop)return;S.paused=!S.paused;$('pause').textContent=S.paused?'Resume':'Pause'};
+$('reset').onclick=()=>{Object.assign(S,D,{paused:false,stop:false,trail:[]});K.forEach(k=>$(k).value=S[k]);$('pause').textContent='Pause';reset&&reset()};
+addEventListener('keydown',e=>{if(e.target.tagName==='SELECT')return;const m=keys[e.key];if(m){nudge(...m);e.preventDefault()}
+if(e.key===' '&&e.target.tagName!=='BUTTON'){$('pause').click();e.preventDefault()}})}
+function run(step,draw){let last=performance.now();(function f(now){const dt=Math.min(.1,(now-last)/1000);last=now;if(!S.paused)step(dt*S.ts);draw();requestAnimationFrame(f)})(last)}
+function live(f){K=[...document.querySelectorAll('input[type=range]')].map(e=>e.id);S={};
+K.forEach(k=>{S[k]=+$(k).value;$(k).addEventListener('input',e=>{S[k]=+e.target.value;f()})});
+document.querySelectorAll('select').forEach(e=>{S[e.id]=+e.value;e.addEventListener('change',()=>{S[e.id]=+e.value;f()})});
+document.querySelectorAll('input[type=checkbox]').forEach(e=>{S[e.id]=e.checked;e.addEventListener('change',()=>{S[e.id]=e.checked;f()})});
+document.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{const[k,d]=b.dataset.d.split(':'),el=$(k);S[k]=el.dataset.w?n360(S[k]+ +d):cl(S[k]+ +d,+el.min,+el.max);el.value=S[k];f()});
+addEventListener('resize',f);f()}
+function arr(ctx,x1,y1,x2,y2,c,w){ctx.strokeStyle=ctx.fillStyle=c;ctx.lineWidth=w;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();const a=Math.atan2(y2-y1,x2-x1);ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-12*Math.cos(a-.4),y2-12*Math.sin(a-.4));ctx.lineTo(x2-12*Math.cos(a+.4),y2-12*Math.sin(a+.4));ctx.fill()}
+function plane(ctx,x,y,c){ctx.save();ctx.translate(x,y);const k=1/(ctx.__z||1);ctx.scale(k,k);ctx.beginPath();ctx.moveTo(11,0);ctx.lineTo(-9,-6);ctx.lineTo(-4,0);ctx.lineTo(-9,6);ctx.closePath();ctx.fillStyle=c;ctx.fill();ctx.restore()}
+
+const M=C('map');
+function ui(){const rh=S.rw*10%360,a=n180(S.wd-rh),A=Math.abs(a),hw=S.ws*Math.cos(rad(a)),xw=S.ws*Math.sin(rad(a)),gx=(S.ws+S.gu)*Math.sin(rad(a)),f=A<=20?1/3:A<=30?.5:A<=45?.75:1,mx=Math.max(Math.abs(xw),Math.abs(gx)),bad=mx>S.lim,tw=hw<-10;
+T('qW',pad(S.wd)+'° / '+S.ws+(S.gu?' G'+(S.ws+S.gu):''));T('qH',Math.abs(hw).toFixed(0)+' kt '+(hw>=0?'head':'tail'));T('qX',Math.abs(xw).toFixed(0)+' kt '+(xw>.5?'from R':xw<-.5?'from L':''));
+T('qA',Math.round(A)+'°');T('qG',Math.abs(gx).toFixed(0)+' kt');T('qR',(S.ws*f).toFixed(0)+' kt');T('qL',Math.round(100*mx/S.lim)+'%',bad?'var(--bad)':'');
+T('qV',bad?'OVER LIMIT':tw?'TAILWIND':'WITHIN LIMIT',bad||tw?'var(--bad)':'var(--ok)');$('rwn').textContent='RWY '+String(S.rw).padStart(2,'0')+' · heading '+pad(rh)+'°';syncOut()}
+function draw(){const v=cssv(),{ctx,W,H}=M,cx=W/2,cy=H*.6,a=rad(n180(S.wd-S.rw*10)),sc=.36*Math.min(W,H)/Math.max(S.ws+S.gu,15),px=cx+Math.sin(a)*S.ws*sc,py=cy-Math.cos(a)*S.ws*sc;
+ctx.clearRect(0,0,W,H);ctx.fillStyle=v('--mute');ctx.globalAlpha=.3;ctx.fillRect(cx-16,0,32,H);ctx.globalAlpha=1;
+ctx.strokeStyle=v('--ink');ctx.lineWidth=2;ctx.setLineDash([12,10]);ctx.beginPath();ctx.moveTo(cx,0);ctx.lineTo(cx,H);ctx.stroke();
+ctx.strokeStyle=v('--acc');ctx.lineWidth=1;ctx.setLineDash([4,4]);[-1,1].forEach(s=>{ctx.beginPath();ctx.moveTo(cx+s*S.lim*sc,0);ctx.lineTo(cx+s*S.lim*sc,H);ctx.stroke()});ctx.setLineDash([]);
+arr(ctx,px,py,cx,cy,v('--ink'),3);arr(ctx,px,py,cx,py,v('--acc'),2.5);arr(ctx,cx,py,cx,cy,v('--ok'),2.5);
+ac(ctx,cx,cy,0,v('--ink'));ctx.font='600 12px system-ui';ctx.textAlign='center';
+const hw=S.ws*Math.cos(a),xw=S.ws*Math.sin(a);
+ctx.fillStyle=v('--acc');ctx.fillText('crosswind '+Math.abs(xw).toFixed(0),(px+cx)/2,py-10);ctx.fillStyle=v('--ok');ctx.fillText((hw>=0?'headwind ':'tailwind ')+Math.abs(hw).toFixed(0),cx+(px>cx?-50:50),(py+cy)/2);
+ctx.fillStyle=v('--ink');ctx.fillText('wind '+S.ws+' kt',px,py-26)}
+function rnd(){const r=Math.random;Object.assign(S,{rw:1+Math.floor(r()*36),wd:Math.floor(r()*36)*10,ws:8+Math.floor(r()*33),gu:r()<.5?0:5+Math.floor(r()*11),lim:[12,15,17,20,25][Math.floor(r()*5)]});Object.keys(S).forEach(k=>{const e=$(k);if(e&&e.type==='range')e.value=S[k]});$('ws').dispatchEvent(new Event('input'))}
+live(()=>{ui();draw()});$('rnd').onclick=rnd;rnd();
+</script></body></html>

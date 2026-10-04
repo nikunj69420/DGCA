@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>DGCA Exam Practice</title>
+<style>
+:root{--bg:#f3f5f8;--panel:#fff;--ink:#16202c;--mute:#667587;--line:#d5dce5;--map:#eaf0f6;--acc:#d9480f;--ok:#1b8a4b;--bad:#c92a2a;--card:#1b2430;--cardink:#e8eef5;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e131a;--panel:#161d27;--ink:#e6ecf3;--mute:#8596a9;--line:#263140;--map:#0b1017;--acc:#ffa94d;--ok:#51cf66;--bad:#ff6b6b;--card:#0a0e14;--cardink:#e8eef5}}
+:root[data-theme="dark"]{--bg:#0e131a;--panel:#161d27;--ink:#e6ecf3;--mute:#8596a9;--line:#263140;--map:#0b1017;--acc:#ffa94d;--ok:#51cf66;--bad:#ff6b6b;--card:#0a0e14;--cardink:#e8eef5}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.top{display:flex;flex-wrap:wrap;gap:6px;padding:10px 14px 0;max-width:1500px;margin:auto}.top a{color:var(--mute);text-decoration:none;font-size:13px;padding:5px 14px;border:1px solid var(--line);border-radius:99px;background:var(--panel)}.top a:hover,.top a.on{border-color:var(--acc)}.top a.on{color:var(--ink)}
+header{padding:14px 18px;display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px}
+h1{font-size:20px;margin:0;letter-spacing:.3px}
+header span{color:var(--mute);font-size:13px}
+.grid{display:grid;grid-template-columns:minmax(0,2.2fr) minmax(300px,380px);gap:14px;padding:0 14px 18px;max-width:1500px;margin:auto}
+@media(max-width:820px){.grid{grid-template-columns:1fr}}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px}
+#map{width:100%;aspect-ratio:4/3;max-height:88vh;display:block;border-radius:8px;background:var(--map)}
+.hint{color:var(--mute);font-size:12px;margin:8px 2px 0}
+#alt{width:100%;max-width:340px;display:block;margin:0 auto}
+.read{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:10px 0 0}
+.read div{background:var(--bg);border-radius:8px;padding:6px 8px;text-align:center}
+.read b{display:block;font-size:18px;font-variant-numeric:tabular-nums}
+.read small{color:var(--mute);font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+.ctl{margin:10px 0}
+.ctl label{display:flex;justify-content:space-between;font-size:13px;color:var(--mute);margin-bottom:4px}
+.ctl label output{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+.row{display:flex;gap:6px;align-items:center}
+input[type=range]{flex:1;accent-color:var(--acc);min-width:0}
+button{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:5px 10px;cursor:pointer}
+button:hover{border-color:var(--acc)}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.top.sub{padding-top:6px}.top.sub a{font-size:12px;padding:3px 11px}
+canvas{width:100%;display:block;border-radius:8px;background:var(--map)}.pair{display:flex;gap:10px;flex-wrap:wrap}.pair svg{flex:1 1 260px;max-width:340px;margin:auto;display:block}.ind{width:100%;max-width:340px;display:block;margin:0 auto}select{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:5px 10px;width:100%}input[type=checkbox]{accent-color:var(--acc)}.ctl label.ck{justify-content:flex-start;gap:8px;color:var(--ink)}
+.top.sub{padding-top:6px}.top.sub a{font-size:12px;padding:3px 11px}.tt{font-size:15px;font-weight:600;margin:0 0 8px}.lamps{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}.lamps span{padding:5px 10px;border-radius:6px;border:1px solid var(--line);font-size:12px;font-weight:700;color:var(--mute)}.lamps span.am{background:#f59f00;color:#000;border-color:#f59f00}.lamps span.rd{background:var(--bad);color:#fff;border-color:var(--bad)}.wbt{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px}.wbt td,.wbt th{padding:4px 8px;border-bottom:1px solid var(--line);text-align:right}.wbt th:first-child,.wbt td:first-child{text-align:left}.wbt th{color:var(--mute);font-weight:500}pre.m{background:var(--bg);border-radius:8px;padding:8px;font-size:11px;line-height:1.4;overflow:auto;margin:8px 0 0;white-space:pre-wrap}input[type=text]{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:5px 10px;width:100%}.sq{display:flex;gap:8px;justify-content:center;margin:8px 0}.sq div{display:flex;flex-direction:column;align-items:center;gap:4px}.sq b{font-size:28px;font-variant-numeric:tabular-nums;background:var(--card);color:var(--acc);border-radius:6px;padding:2px 10px}.sq button{padding:0 10px}
+.h{margin:14px 0 6px;font-size:15px}.ck{display:flex;gap:8px;align-items:flex-start;margin:6px 0;font-size:15px}.ck input{margin-top:4px}
+.sb{display:flex;flex-direction:column;align-items:flex-start;text-align:left;padding:12px;width:100%;margin-bottom:8px}.sb.on{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc)}.sb small,.ck small{color:var(--mute)}
+.op{display:flex;gap:10px;width:100%;text-align:left;margin:6px 0;padding:10px 12px;border-radius:10px;align-items:flex-start;line-height:1.4}.op b{min-width:22px}.op:disabled{opacity:1;cursor:default;color:var(--ink)}
+.op.sel{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc)}.op.ok,.qg .ok{background:rgba(27,138,75,.2);border-color:var(--ok)}.op.no,.qg .no{background:rgba(201,42,42,.18);border-color:var(--bad)}
+.qtext{font-size:17px;line-height:1.5;margin:6px 0 12px;white-space:pre-line}.sb:disabled{opacity:.5;cursor:default}.ex{background:var(--bg);border-radius:8px;padding:10px;margin-top:10px;font-size:14px}.fb{font-weight:700;margin-top:10px}
+.qg{display:grid;grid-template-columns:repeat(auto-fill,minmax(38px,1fr));gap:6px;margin:10px 0;max-height:360px;overflow:auto;padding:2px}.qg button{padding:5px 0;font-size:13px;font-variant-numeric:tabular-nums}
+.qg .ans{background:rgba(217,72,15,.2);border-color:var(--acc)}.qg .cur{outline:2px solid var(--ink);outline-offset:1px}.qg .fl{box-shadow:inset 0 0 0 2px #f59f00}
+.bar{height:6px;background:var(--line);border-radius:4px;overflow:hidden}.bar i{display:block;height:100%;background:var(--ok)}
+.big{font-size:44px;font-weight:700}.tm{font-size:30px;font-variant-numeric:tabular-nums;font-weight:700}.tm.low{color:var(--bad)}
+.banner{background:var(--bg);border:1px dashed var(--acc);border-radius:8px;padding:8px 12px;font-size:13px;margin-bottom:10px}
+.go{background:var(--acc);color:#fff;border-color:var(--acc);font-weight:700;padding:9px 18px}.go:disabled{opacity:.4;cursor:default}
+table.rt{border-collapse:collapse;width:100%;font-size:14px;margin:8px 0 12px}.rt td,.rt th{text-align:left;padding:5px 8px;border-bottom:1px solid var(--line)}.rt th{color:var(--mute);font-weight:500}
+</style></head><body>
+<nav class="top"><a href="index.html">Home</a><a href="vor.html">Navigation</a><a href="altimeter.html">Flight Instruments</a><a href="windtri.html">Performance &amp; Planning</a><a href="gpws.html">Safety &amp; Alerting</a><a href="radar.html">Surveillance &amp; ATC</a><a href="practice.html" class="on">Exam Practice</a></nav><nav class="top sub"><a href="practice.html" class="on">DGCA Practice</a></nav>
+<header><h1>✎ DGCA Exam Practice</h1><span>Practice with instant answers or take a timed mock test · progress is saved in this browser</span></header>
+<div class="grid"><div class="box" id="main"></div><div class="box" id="dash"></div></div>
+<script src="questions.js"></script>
+<script>
+const TEST_Q=50,TEST_MIN=60,L='ABCDEFGH',$=id=>document.getElementById(id);
+const QB=window.QB||{subjects:[],questions:[],meta:{}};
+const LS={g(k,d){try{const v=JSON.parse(localStorage.getItem(k));return v==null?d:v}catch(e){return d}},s(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+let P=LS.g('dgca.p',{}),H=LS.g('dgca.h',[]),cfg={sub:null,topics:new Set(),mode:'practice',shuf:true,filt:'all'},V='setup',Q=[],ans=[],flg=[],cur=0,t0=0,tmr=null,res=null;
+const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])),
+shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a},
+subj=id=>QB.subjects.find(s=>s.id===id),tname=id=>{for(const s of QB.subjects){const t=s.topics.find(t=>t.id===id);if(t)return t.name}return id},
+pc=(a,b)=>b?Math.round(100*a/b):0,mmss=s=>String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0'),
+pool=()=>QB.questions.filter(q=>q.s===cfg.sub&&cfg.topics.has(q.t)&&(cfg.filt==='all'||(cfg.filt==='new'?!P[q.id]:P[q.id]&&P[q.id].r===0)));
+function setupView(){
+const subs=QB.subjects.map(s=>{const qs=QB.questions.filter(q=>q.s===s.id),at=qs.filter(q=>P[q.id]).length;return `<button class="sb${cfg.sub===s.id?' on':''}" data-a="sub:${s.id}" ${qs.length?'':'disabled'}><b>${esc(s.name)}</b><small>${qs.length?qs.length+' questions · '+at+' attempted':'No questions loaded yet'}</small></button>`}).join('');
+let opt='';
+if(cfg.sub){const s=subj(cfg.sub),n=pool().length,all=s.topics.every(t=>cfg.topics.has(t.id));
+opt=`<h3 class="h">2. Topics</h3><label class="ck"><input type="checkbox" data-a="tall" ${all?'checked':''}> <b>All topics</b></label>`+s.topics.map(t=>`<label class="ck"><input type="checkbox" data-a="tp:${t.id}" ${cfg.topics.has(t.id)?'checked':''}> <span>${esc(t.name)} <small>(${QB.questions.filter(q=>q.t===t.id).length})</small></span></label>`).join('')
++`<h3 class="h">3. Mode</h3><label class="ck"><input type="radio" name="md" data-a="mode:practice" ${cfg.mode==='practice'?'checked':''}> <span><b>Practice</b>: one question at a time, the correct answer is shown as soon as you answer</span></label>
+<label class="ck"><input type="radio" name="md" data-a="mode:test" ${cfg.mode==='test'?'checked':''}> <span><b>Test</b>: up to ${TEST_Q} questions in ${TEST_MIN} minutes, answers revealed only after you submit</span></label>`
++(cfg.mode==='practice'?`<div class="row" style="margin:8px 0"><label class="ck" style="margin:0"><input type="checkbox" data-a="shuf" ${cfg.shuf?'checked':''}> Shuffle</label><select data-a="filt" style="margin-left:auto"><option value="all">All questions</option><option value="new" ${cfg.filt==='new'?'selected':''}>Not attempted yet</option><option value="wrong" ${cfg.filt==='wrong'?'selected':''}>Previously wrong</option></select></div>`:'')
++`<p><button class="go" data-a="start" ${n?'':'disabled'}>Start ${cfg.mode==='test'?'test ('+Math.min(n,TEST_Q)+' questions)':'practice ('+n+' questions)'}</button></p>`}
+return `${QB.meta&&QB.meta.sample?'<div class="banner">Sample questions are loaded. Replace <b>questions.js</b> with your DGCA question bank.</div>':QB.meta&&QB.meta.note?'<div class="banner">'+esc(QB.meta.note)+'</div>':''}<h3 class="h">1. Subject</h3>${subs}${opt}`}
+function dashSetup(){const A=QB.questions,at=A.filter(q=>P[q.id]).length,cor=A.filter(q=>P[q.id]&&P[q.id].r===1).length;
+const rows=QB.subjects.map(s=>{const qs=A.filter(q=>q.s===s.id),a=qs.filter(q=>P[q.id]).length,c=qs.filter(q=>P[q.id]&&P[q.id].r===1).length;return `<div style="margin:10px 0"><div class="row" style="justify-content:space-between"><span>${esc(s.name)}</span><small style="color:var(--mute)">${a}/${qs.length} attempted · ${pc(c,a)}% correct</small></div><div class="bar"><i style="width:${pc(a,qs.length)}%"></i></div></div>`}).join('');
+const hist=H.slice(0,6).map(h=>`<tr><td>${new Date(h.d).toLocaleDateString()}</td><td>${esc(h.s)}</td><td>${h.c}/${h.n}</td><td>${pc(h.c,h.n)}%</td></tr>`).join('');
+return `<h3 class="h" style="margin-top:0">Your progress</h3><div class="read"><div><small>Questions</small><b>${A.length}</b></div><div><small>Attempted</small><b>${at}</b></div><div><small>Remaining</small><b>${A.length-at}</b></div><div><small>Correct</small><b>${pc(cor,at)}%</b></div></div>${rows}
+<h3 class="h">Recent tests</h3>${hist?`<table class="rt"><tr><th>Date</th><th>Subject</th><th>Score</th><th>%</th></tr>${hist}</table>`:'<small style="color:var(--mute)">No tests taken yet.</small>'}<div class="btns"><button data-a="reset">Reset progress</button></div>`}
+function qview(){const q=Q[cur],a=ans[cur],test=V==='test',show=!test&&(V==='review'||a!=null);
+const ops=q.o.map((o,i)=>{let c='op';if(show){if(i===q.a)c+=' ok';else if(i===a)c+=' no'}else if(a===i)c+=' sel';return `<button class="${c}" data-a="opt:${i}" ${show?'disabled':''}><b>${L[i]}</b><span>${esc(o)}</span></button>`}).join('');
+const fb=show?`<div class="fb" style="color:var(--${a===q.a?'ok':'bad'})">${a==null?'Not answered. ':a===q.a?'Correct. ':'Incorrect. '}Correct answer: ${L[q.a]}</div>${q.e?`<div class="ex">${esc(q.e)}</div>`:''}`:'';
+return `<small style="color:var(--mute)">${esc(subj(q.s).name)} › ${esc(tname(q.t))} · Question ${cur+1} of ${Q.length}${flg[cur]?' · ⚑ flagged':''}</small><p class="qtext">${esc(q.q)}</p>${ops}${fb}
+<div class="btns"><button data-a="prev" ${cur?'':'disabled'}>← Previous</button><button data-a="next" ${cur<Q.length-1?'':'disabled'}>Next →</button>${test?`<button data-a="flag">${flg[cur]?'Unflag':'⚑ Flag for review'}</button><button data-a="clr">Clear answer</button>`:''}</div>`}
+function resultView(){const n=Q.length,c=res.c,un=ans.filter(x=>x==null).length,by={};Q.forEach((q,i)=>{const k=tname(q.t);by[k]=by[k]||[0,0];by[k][1]++;if(ans[i]===q.a)by[k][0]++});
+return `<h3 class="h" style="margin-top:0">${res.mode==='test'?'Test result':'Session summary'}</h3><div class="big">${pc(c,n)}%</div><p>${c} correct · ${n-c-un} wrong · ${un} unanswered · ${n} questions${res.secs!=null?' · time '+mmss(res.secs):''}</p>
+<table class="rt"><tr><th>Topic</th><th>Correct</th><th>%</th></tr>${Object.entries(by).map(([k,v])=>`<tr><td>${esc(k)}</td><td>${v[0]}/${v[1]}</td><td>${pc(v[0],v[1])}%</td></tr>`).join('')}</table>
+<div class="btns"><button class="go" data-a="rev">Review answers</button>${res.mode==='test'?'<button data-a="start">Take another test</button>':''}<button data-a="home">Back to home</button></div>`}
+function dashSess(){const n=Q.length,at=ans.filter(x=>x!=null).length,cor=ans.filter((x,i)=>x===Q[i].a).length,fl=flg.filter(Boolean).length,test=V==='test',
+tl=test?[['Answered',at],['Unanswered',n-at],['Flagged',fl],['Total',n]]:[['Attempted',at],['Remaining',n-at],['Correct',cor],['Accuracy',pc(cor,at)+'%']],
+grid=Q.map((q,i)=>{let c=test?(ans[i]!=null?'ans':''):(ans[i]==null?'':ans[i]===q.a?'ok':'no');if(flg[i])c+=' fl';if(i===cur&&V!=='result')c+=' cur';return `<button class="${c}" data-a="go:${i}">${i+1}</button>`}).join('');
+const b=V==='test'?'<button class="go" data-a="submit">Submit test</button>':V==='practice'?'<button data-a="end">End session</button>':V==='review'?'<button data-a="res">Back to results</button>':'<button data-a="home">Back to home</button>';
+return `${test?'<div class="tm" id="tm">--:--</div><small style="color:var(--mute)">time left</small>':''}<div class="read">${tl.map(([k,v])=>`<div><small>${k}</small><b>${v}</b></div>`).join('')}</div>
+<div class="qg">${grid}</div><small style="color:var(--mute)">${test?'Orange = answered · amber outline = flagged · grey = unanswered':'Green = correct · red = wrong · grey = not attempted'}</small><div class="btns">${b}</div>`}
+function draw(){let m,d;if(V==='setup'){m=setupView();d=dashSetup()}else if(V==='result'){m=resultView();d=dashSess()}else{m=qview();d=dashSess()}$('main').innerHTML=m;$('dash').innerHTML=d;if(V==='test')tick()}
+function start(){let p=pool();if(!p.length)return;p=cfg.mode==='test'?shuf(p).slice(0,TEST_Q):cfg.shuf?shuf(p):p;
+Q=p;ans=Q.map(()=>null);flg=Q.map(()=>false);cur=0;V=cfg.mode;res=null;t0=Date.now();clearInterval(tmr);if(V==='test')tmr=setInterval(tick,1000);draw()}
+function tick(){if(V!=='test')return;const l=TEST_MIN*60-Math.floor((Date.now()-t0)/1000),e=$('tm');if(l<=0){submit(true);return}if(e){e.textContent=mmss(l);e.className='tm'+(l<300?' low':'')}}
+function rec(k){const q=Q[k];if(ans[k]==null)return;P[q.id]={n:((P[q.id]||{}).n||0)+1,r:ans[k]===q.a?1:0};LS.s('dgca.p',P)}
+function pick(i){if(V==='practice'){if(ans[cur]!=null)return;ans[cur]=i;rec(cur)}else if(V==='test')ans[cur]=ans[cur]===i?null:i;else return;draw()}
+function submit(auto){if(V!=='test')return;if(!auto){const un=ans.filter(x=>x==null).length;if(!confirm(un?un+' question(s) are unanswered. Submit the test?':'Submit the test?'))return}
+clearInterval(tmr);const secs=Math.min(TEST_MIN*60,Math.floor((Date.now()-t0)/1000)),c=ans.filter((x,i)=>x===Q[i].a).length;Q.forEach((q,i)=>rec(i));
+res={c,n:Q.length,secs,mode:'test'};H.unshift({d:Date.now(),s:subj(cfg.sub).name,c,n:Q.length,secs});H=H.slice(0,20);LS.s('dgca.h',H);V='result';draw()}
+function end(){res={c:ans.filter((x,i)=>x===Q[i].a).length,n:Q.length,mode:'practice'};V='result';draw()}
+function act(el){const[a,x]=el.dataset.a.split(':');
+if(a==='sub'){cfg.sub=x;cfg.topics=new Set(subj(x).topics.map(t=>t.id))}
+else if(a==='tp'){cfg.topics.has(x)?cfg.topics.delete(x):cfg.topics.add(x)}
+else if(a==='tall'){cfg.topics=el.checked?new Set(subj(cfg.sub).topics.map(t=>t.id)):new Set()}
+else if(a==='mode')cfg.mode=x;else if(a==='shuf')cfg.shuf=el.checked;else if(a==='filt')cfg.filt=el.value;
+else if(a==='start')return start();else if(a==='opt')return pick(+x);
+else if(a==='prev')cur=Math.max(0,cur-1);else if(a==='next')cur=Math.min(Q.length-1,cur+1);
+else if(a==='go'){if(V==='result')V='review';cur=+x}
+else if(a==='flag')flg[cur]=!flg[cur];else if(a==='clr')ans[cur]=null;
+else if(a==='submit')return submit(false);else if(a==='end')return end();
+else if(a==='rev'){V='review';cur=0}else if(a==='res')V='result';
+else if(a==='home'){clearInterval(tmr);V='setup'}
+else if(a==='reset'){if(!confirm('Clear all saved progress and test history?'))return;P={};H=[];LS.s('dgca.p',P);LS.s('dgca.h',H)}
+draw()}
+document.addEventListener('click',e=>{const el=e.target.closest('[data-a]');if(el&&!el.matches('input,select'))act(el)});
+document.addEventListener('change',e=>{const el=e.target.closest('[data-a]');if(el&&el.matches('input,select'))act(el)});
+addEventListener('keydown',e=>{if(!['practice','test','review'].includes(V)||/INPUT|SELECT/.test(e.target.tagName))return;const k=e.key.toLowerCase(),i=L.toLowerCase().indexOf(k),n=+k,len=Q[cur].o.length;
+if(e.key==='ArrowRight'){if(cur<Q.length-1){cur++;draw()}}else if(e.key==='ArrowLeft'){if(cur>0){cur--;draw()}}else if(k.length===1&&i>=0&&i<len)pick(i);else if(n>=1&&n<=len)pick(n-1)});
+draw();
+</script></body></html>

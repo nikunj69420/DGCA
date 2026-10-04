@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Transponder Modes: Cockpit &amp; Controller</title>
+<style>
+:root{--bg:#f3f5f8;--panel:#fff;--ink:#16202c;--mute:#667587;--line:#d5dce5;--map:#eaf0f6;--acc:#d9480f;--ok:#1b8a4b;--bad:#c92a2a;--card:#1b2430;--cardink:#e8eef5;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e131a;--panel:#161d27;--ink:#e6ecf3;--mute:#8596a9;--line:#263140;--map:#0b1017;--acc:#ffa94d;--ok:#51cf66;--bad:#ff6b6b;--card:#0a0e14;--cardink:#e8eef5}}
+:root[data-theme="dark"]{--bg:#0e131a;--panel:#161d27;--ink:#e6ecf3;--mute:#8596a9;--line:#263140;--map:#0b1017;--acc:#ffa94d;--ok:#51cf66;--bad:#ff6b6b;--card:#0a0e14;--cardink:#e8eef5}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.top{display:flex;flex-wrap:wrap;gap:6px;padding:10px 14px 0;max-width:1500px;margin:auto}.top a{color:var(--mute);text-decoration:none;font-size:13px;padding:5px 14px;border:1px solid var(--line);border-radius:99px;background:var(--panel)}.top a:hover,.top a.on{border-color:var(--acc)}.top a.on{color:var(--ink)}
+header{padding:14px 18px;display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px}
+h1{font-size:20px;margin:0;letter-spacing:.3px}
+header span{color:var(--mute);font-size:13px}
+.grid{display:grid;grid-template-columns:minmax(0,2.2fr) minmax(300px,380px);gap:14px;padding:0 14px 18px;max-width:1500px;margin:auto}
+@media(max-width:820px){.grid{grid-template-columns:1fr}}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px}
+#map{width:100%;aspect-ratio:4/3;max-height:88vh;display:block;border-radius:8px;background:var(--map)}
+.hint{color:var(--mute);font-size:12px;margin:8px 2px 0}
+#alt{width:100%;max-width:340px;display:block;margin:0 auto}
+.read{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:10px 0 0}
+.read div{background:var(--bg);border-radius:8px;padding:6px 8px;text-align:center}
+.read b{display:block;font-size:18px;font-variant-numeric:tabular-nums}
+.read small{color:var(--mute);font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+.ctl{margin:10px 0}
+.ctl label{display:flex;justify-content:space-between;font-size:13px;color:var(--mute);margin-bottom:4px}
+.ctl label output{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+.row{display:flex;gap:6px;align-items:center}
+input[type=range]{flex:1;accent-color:var(--acc);min-width:0}
+button{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:5px 10px;cursor:pointer}
+button:hover{border-color:var(--acc)}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+canvas{width:100%;display:block;border-radius:8px;background:var(--map)}.pair{display:flex;gap:10px;flex-wrap:wrap}.pair svg{flex:1 1 260px;max-width:340px;margin:auto;display:block}.ind{width:100%;max-width:340px;display:block;margin:0 auto}select{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:5px 10px;width:100%}input[type=checkbox]{accent-color:var(--acc)}.ctl label.ck{justify-content:flex-start;gap:8px;color:var(--ink)}
+.top.sub{padding-top:6px}.top.sub a{font-size:12px;padding:3px 11px}.tt{font-size:15px;font-weight:600;margin:0 0 8px}.lamps{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}.lamps span{padding:5px 10px;border-radius:6px;border:1px solid var(--line);font-size:12px;font-weight:700;color:var(--mute)}.lamps span.am{background:#f59f00;color:#000;border-color:#f59f00}.lamps span.rd{background:var(--bad);color:#fff;border-color:var(--bad)}.wbt{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px}.wbt td,.wbt th{padding:4px 8px;border-bottom:1px solid var(--line);text-align:right}.wbt th:first-child,.wbt td:first-child{text-align:left}.wbt th{color:var(--mute);font-weight:500}pre.m{background:var(--bg);border-radius:8px;padding:8px;font-size:11px;line-height:1.4;overflow:auto;margin:8px 0 0;white-space:pre-wrap}input[type=text]{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:5px 10px;width:100%}.sq{display:flex;gap:8px;justify-content:center;margin:8px 0}.sq div{display:flex;flex-direction:column;align-items:center;gap:4px}.sq b{font-size:28px;font-variant-numeric:tabular-nums;background:var(--card);color:var(--acc);border-radius:6px;padding:2px 10px}.sq button{padding:0 10px}
+.zt{position:absolute;top:8px;right:8px;display:flex;flex-direction:column;gap:6px}.zt button{width:34px;height:34px;padding:0;font-size:17px;background:var(--panel);border-radius:8px}.zl{position:absolute;left:10px;bottom:8px;font-size:12px;color:var(--mute);pointer-events:none}
+</style></head><body>
+<nav class="top"><a href="index.html">Home</a><a href="vor.html">Navigation</a><a href="altimeter.html">Flight Instruments</a><a href="windtri.html">Performance &amp; Planning</a><a href="gpws.html">Safety &amp; Alerting</a><a href="radar.html" class="on">Surveillance &amp; ATC</a><a href="practice.html">Exam Practice</a></nav><nav class="top sub"><a href="radar.html">Primary &amp; Secondary Radar</a><a href="adsb.html">ADS-B</a><a href="xpdr.html" class="on">Transponder Modes</a></nav>
+<header><h1>⌁ Transponder Modes: Cockpit &amp; Controller</h1><span>Mode A · Mode C · Mode S · see what the pilot sets and what the controller sees</span></header>
+<div class="grid"><div class="box"><p class="tt">Controller view</p><p class="tt" id="task" style="color:var(--acc)"></p><canvas id="map" style="aspect-ratio:1/1;max-height:80vh"></canvas>
+<p class="hint">Your aircraft is the one that flies where you steer it. With the transponder OFF or STBY the controller only gets a primary echo (+). Mode A adds your 4-digit code, Mode C adds pressure altitude, and Mode S adds your aircraft ID and 24-bit address. Emergency codes 7500, 7600 and 7700 flash on the controller's screen. IDENT makes your target stand out for 18 seconds.</p></div><div class="box"><p class="tt">Cockpit view <span id="rl" style="color:var(--mute);font-weight:400">● reply</span></p><div class="sq"><div><button data-q="0:1">▲</button><b id="dg0">0</b><button data-q="0:-1">▼</button></div><div><button data-q="1:1">▲</button><b id="dg1">0</b><button data-q="1:-1">▼</button></div><div><button data-q="2:1">▲</button><b id="dg2">0</b><button data-q="2:-1">▼</button></div><div><button data-q="3:1">▲</button><b id="dg3">0</b><button data-q="3:-1">▼</button></div></div><div class="btns" style="margin:0 0 8px;justify-content:center"><button data-c="1200">1200</button><button data-c="7000">7000</button><button data-c="7500">7500</button><button data-c="7600">7600</button><button data-c="7700">7700</button></div><div class="ctl"><label>Transponder mode</label><select id="mode"><option value="0">OFF</option><option value="1">STBY</option><option value="2">ON · Mode A</option><option value="3">ALT · Mode A + C</option><option value="4">Mode S (ALT)</option></select></div><div class="read"><div><small>Squawk</small><b id="qA">--</b></div><div><small>Mode C</small><b id="qC">--</b></div><div><small>ICAO 24-bit</small><b id="qI">--</b></div><div><small>Controller sees</small><b id="qV" style="font-size:13px;line-height:26px">--</b></div></div><div class="ctl"><label>Aircraft ID (Mode S)</label><input type="text" id="cs" value="VTABC" maxlength="8"></div><div class="ctl"><label>Pressure altitude <output id="o_alt" data-u=" ft"></output></label><input type="range" id="alt" min="0" max="45000" step="100" value="8500" style="width:100%"></div><div class="ctl"><label>Heading <output id="o_tgt" data-u="°" data-p="1"></output></label><div class="row"><button data-d="tgt:-10">−10</button><button data-d="tgt:-1">−1</button><input type="range" id="tgt" min="0" max="359" step="1" value="60" data-w="1"><button data-d="tgt:1">+1</button><button data-d="tgt:10">+10</button></div></div><div class="ctl"><label>Interrogation shown on the pulse scope</label><select id="ia"><option value="0">Mode A (identity)</option><option value="1">Mode C (altitude)</option><option value="2">Mode S (selective)</option></select></div><canvas id="pls" data-nz="1" style="aspect-ratio:3.4/1;margin-bottom:8px"></canvas><div class="ctl"><label>Time compression <output id="o_ts" data-u="×"></output></label><input type="range" id="ts" min="1" max="30" step="1" value="10" style="width:100%"></div><div class="btns"><button id="pause">Pause</button><button id="reset">Reset</button><button id="rnd">New ATC instruction</button><button id="idn">IDENT</button></div></div></div>
+<script>
+const $=id=>document.getElementById(id),n360=a=>((a%360)+360)%360,n180=a=>{a=n360(a);return a>180?a-360:a},rad=d=>d*Math.PI/180,cl=(v,a,b)=>Math.max(a,Math.min(b,v)),pad=v=>String(Math.round(n360(v))%360).padStart(3,'0');
+const cssv=()=>{const cs=getComputedStyle(document.documentElement);return k=>cs.getPropertyValue(k).trim()};
+const T=(id,v,c)=>{const e=$(id);e.textContent=v;e.style.color=c||''};
+const turn=(h,t,sd)=>{const d=n180(t-h),s=3*sd;return n360(Math.abs(d)<=s?t:h+Math.sign(d)*s)};
+function zoomify(cv,ctx0,o){const z={k:1,x:0,y:0,moved:false},P=new Map();let pd=0,lb=null,fb=null;const setFo=v=>{z.fo=v;if(fb){fb.style.background=v?'var(--acc)':'var(--panel)';fb.style.color=v?'#fff':''}};
+const ctx=new Proxy(ctx0,{get(t,k){if(k==='__z')return z.k;if(k==='__f')return(x,y)=>{z.fp=[x,y]};if(k==='clearRect')return apply;if(k==='setLineDash')return a=>t.setLineDash(a.map(x=>x/z.k));const v=t[k];return typeof v==='function'?v.bind(t):v},
+set(t,k,v){if(k==='lineWidth')v=v/z.k;else if(k==='font')v=String(v).replace(/(\d+(?:\.\d+)?)px/,(m,n)=>(n/z.k)+'px');t[k]=v;return true}});
+function apply(){const d=devicePixelRatio||1,k=z.k;if(z.fo&&z.fp&&k>1){z.x=-k*(z.fp[0]-o.W/2);z.y=-k*(z.fp[1]-o.H/2);clamp()}ctx0.setTransform(d,0,0,d,0,0);ctx0.clearRect(0,0,o.W,o.H);ctx0.setTransform(d*k,0,0,d*k,d*(o.W/2*(1-k)+z.x),d*(o.H/2*(1-k)+z.y));if(lb)lb.textContent=k>1.01?'×'+k.toFixed(1)+' · drag to pan · double-click to reset':'scroll or pinch to zoom'}
+function clamp(){const mx=o.W/2*(z.k-1),my=o.H/2*(z.k-1);z.x=Math.max(-mx,Math.min(mx,z.x));z.y=Math.max(-my,Math.min(my,z.y));if(z.k<=1.001){z.k=1;z.x=z.y=0}cv.style.touchAction=z.k>1?'none':'pan-y';cv.style.cursor=z.k>1?'grab':''}
+function zoomAt(px,py,f){const k0=z.k,k=Math.max(1,Math.min(12,k0*f)),r=k/k0,cx=o.W/2,cy=o.H/2;z.x=px-cx-r*(px-cx-z.x);z.y=py-cy-r*(py-cy-z.y);z.k=k;clamp()}
+const rc=()=>cv.getBoundingClientRect(),reset=()=>{z.k=1;clamp()},dist=()=>{const[a,b]=[...P.values()];return Math.hypot(a.x-b.x,a.y-b.y)};
+if(cv.parentNode&&document.createElement){const w=document.createElement('div');w.style.position='relative';cv.parentNode.insertBefore(w,cv);w.appendChild(cv);const tb=document.createElement('div');tb.className='zt';
+[['+','Zoom in',1.4],['−','Zoom out',1/1.4],['⟲','Reset view',0]].concat(cv.dataset.fo?[['⌖','Follow the aircraft',-1]]:[]).forEach(([t,ti,f])=>{const b=document.createElement('button');b.type='button';b.textContent=t;b.title=ti;if(f===-1)fb=b;b.onclick=()=>f===-1?setFo(!z.fo):f?zoomAt(o.W/2,o.H/2,f):reset();tb.appendChild(b)});
+w.appendChild(tb);lb=document.createElement('span');lb.className='zl';w.appendChild(lb)}
+cv.addEventListener('wheel',e=>{e.preventDefault();const r=rc();zoomAt(e.clientX-r.left,e.clientY-r.top,Math.exp(-e.deltaY*.0015))},{passive:false});
+cv.addEventListener('pointerdown',e=>{if(cv.setPointerCapture)cv.setPointerCapture(e.pointerId);P.set(e.pointerId,{x:e.clientX,y:e.clientY,sx:e.clientX,sy:e.clientY});z.moved=false;if(P.size===2)pd=dist()});
+cv.addEventListener('pointermove',e=>{const p=P.get(e.pointerId);if(!p)return;
+if(P.size===2){p.x=e.clientX;p.y=e.clientY;const d=dist(),[a,b]=[...P.values()],r=rc();zoomAt((a.x+b.x)/2-r.left,(a.y+b.y)/2-r.top,d/pd);pd=d;z.moved=true;return}
+if(Math.hypot(e.clientX-p.sx,e.clientY-p.sy)>5)z.moved=true;if(z.k>1){if(z.moved&&z.fo)setFo(false);z.x+=e.clientX-p.x;z.y+=e.clientY-p.y;clamp()}p.x=e.clientX;p.y=e.clientY});
+['pointerup','pointercancel'].forEach(t=>cv.addEventListener(t,e=>P.delete(e.pointerId)));
+cv.addEventListener('dblclick',reset);
+window.__zs=window.__zs||[];window.__zs.push(z);window.__zp=window.__zp||{zoomAt,o};
+if(!window.__zk){window.__zk=1;addEventListener('keydown',e=>{if(/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))return;const p=window.__zp,c=p.o;
+if(e.key==='+'||e.key==='=')p.zoomAt(c.W/2,c.H/2,1.4);else if(e.key==='-')p.zoomAt(c.W/2,c.H/2,1/1.4);else if(e.key==='0')p.zoomAt(c.W/2,c.H/2,1e-9)})}
+return{ctx,z,zoomAt}}
+function C(id){const cv=$(id),ctx0=cv.getContext('2d'),o={cv,W:0,H:0,fit(){const d=devicePixelRatio||1;o.W=cv.clientWidth;o.H=cv.clientHeight;cv.width=o.W*d;cv.height=o.H*d;ctx0.setTransform(d,0,0,d,0,0)}};
+o.fit();const zz=cv.dataset.nz?null:zoomify(cv,ctx0,o);o.ctx=zz?zz.ctx:ctx0;if(zz){o.z=zz.z;o.zoomAt=zz.zoomAt}addEventListener('resize',o.fit);return o}
+function ac(ctx,x,y,h,c){if(ctx.__f)ctx.__f(x,y);ctx.save();ctx.translate(x,y);ctx.rotate(rad(h));const k=1/(ctx.__z||1);ctx.scale(k,k);ctx.fillStyle=c;ctx.beginPath();ctx.moveTo(0,-11);ctx.lineTo(7,9);ctx.lineTo(0,5);ctx.lineTo(-7,9);ctx.closePath();ctx.fill();ctx.restore()}
+const syncOut=()=>document.querySelectorAll('output').forEach(o=>{const v=S[o.id.slice(2)];o.textContent=(o.dataset.p?pad(v):v)+(o.dataset.u||'')});
+let S,D,K;
+function wire(keys,reset){K=[...document.querySelectorAll('input[type=range]')].map(e=>e.id);
+K.forEach(k=>$(k).addEventListener('input',e=>S[k]=+e.target.value));
+const nudge=(k,d)=>{const el=$(k);S[k]=el.dataset.w?n360(Math.round(S[k])+d):cl(S[k]+d,+el.min,+el.max);el.value=S[k]};
+document.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{const[k,d]=b.dataset.d.split(':');nudge(k,+d)});
+$('pause').onclick=()=>{if(S.stop)return;S.paused=!S.paused;$('pause').textContent=S.paused?'Resume':'Pause'};
+$('reset').onclick=()=>{Object.assign(S,D,{paused:false,stop:false,trail:[]});K.forEach(k=>$(k).value=S[k]);$('pause').textContent='Pause';reset&&reset()};
+addEventListener('keydown',e=>{if(e.target.tagName==='SELECT')return;const m=keys[e.key];if(m){nudge(...m);e.preventDefault()}
+if(e.key===' '&&e.target.tagName!=='BUTTON'){$('pause').click();e.preventDefault()}})}
+function run(step,draw){let last=performance.now();(function f(now){const dt=Math.min(.1,(now-last)/1000);last=now;if(!S.paused)step(dt*S.ts);draw();requestAnimationFrame(f)})(last)}
+function live(f){K=[...document.querySelectorAll('input[type=range]')].map(e=>e.id);S={};
+K.forEach(k=>{S[k]=+$(k).value;$(k).addEventListener('input',e=>{S[k]=+e.target.value;f()})});
+document.querySelectorAll('select').forEach(e=>{S[e.id]=+e.value;e.addEventListener('change',()=>{S[e.id]=+e.value;f()})});
+document.querySelectorAll('input[type=checkbox]').forEach(e=>{S[e.id]=e.checked;e.addEventListener('change',()=>{S[e.id]=e.checked;f()})});
+document.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{const[k,d]=b.dataset.d.split(':'),el=$(k);S[k]=el.dataset.w?n360(S[k]+ +d):cl(S[k]+ +d,+el.min,+el.max);el.value=S[k];f()});
+addEventListener('resize',f);f()}
+function arr(ctx,x1,y1,x2,y2,c,w){ctx.strokeStyle=ctx.fillStyle=c;ctx.lineWidth=w;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();const a=Math.atan2(y2-y1,x2-x1);ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-12*Math.cos(a-.4),y2-12*Math.sin(a-.4));ctx.lineTo(x2-12*Math.cos(a+.4),y2-12*Math.sin(a+.4));ctx.fill()}
+function plane(ctx,x,y,c){ctx.save();ctx.translate(x,y);const k=1/(ctx.__z||1);ctx.scale(k,k);ctx.beginPath();ctx.moveTo(11,0);ctx.lineTo(-9,-6);ctx.lineTo(-4,0);ctx.lineTo(-9,6);ctx.closePath();ctx.fillStyle=c;ctx.fill();ctx.restore()}
+
+D={alt:8500,tgt:60,ts:10,x:-25,y:-20,hdg:60};
+S={...D,paused:false,stop:false,trail:[],d:[1,2,0,0],mode:3,ia:0,idt:0,T:0,cs:'VTABC',oth:[]};
+const M=C('map'),P=C('pls'),HEX='8A3F21';
+S.oth=[{cs:'IGO201',sq:'4531',fl:24000,m:4,x:15,y:25,h:200,spd:300,hx:'8006A2'},{cs:'',sq:'2217',fl:18000,m:3,x:-20,y:18,h:100,spd:280,hx:''},{cs:'',sq:'6033',fl:0,m:2,x:30,y:-15,h:300,spd:220,hx:''},{cs:'',sq:'',fl:0,m:0,x:-10,y:-35,h:45,spd:90,hx:''}];
+const OTH=JSON.stringify(S.oth),EM={'7500':'HIJACK','7600':'RADIO FAIL','7700':'EMERGENCY'};
+function gil(alt){const n=cl(Math.round((alt+1200)/100),0,1270),k=Math.floor(n/5),m=n%5,g=k^(k>>1),b=i=>(g>>i)&1,c=[1,3,2,6,4][k%2?4-m:m];
+return{D1:0,D2:b(7),D4:b(6),A1:b(5),A2:b(4),A4:b(3),B1:b(2),B2:b(1),B4:b(0),C1:c&1,C2:(c>>1)&1,C4:(c>>2)&1}}
+function step(sd){S.hdg=turn(S.hdg,S.tgt,sd);S.T+=sd;S.idt=Math.max(0,S.idt-sd);
+const mv=(o,h,s)=>{o.x+=Math.sin(rad(h))*s/3600*sd;o.y+=Math.cos(rad(h))*s/3600*sd;if(Math.hypot(o.x,o.y)>60){o.x*=-.9;o.y*=-.9}};
+mv(S,S.hdg,250);S.oth.forEach(o=>mv(o,o.h,o.spd))}
+function ui(){S.d.forEach((v,i)=>$('dg'+i).textContent=v);const k=S.task,sq0=S.d.join(''),okm=k&&{any:S.mode>=2,a:S.mode===2,s:S.mode===4,ac:S.mode>=3}[k.ck],done=k&&sq0===k.sq&&okm&&(!k.id||S.idd);if(k)$('task').textContent='ATC: "'+k.t+'"'+(done?'   ✓ complied':'');$('rl').style.color=S.mode>=2&&S.T%4<.6?'var(--acc)':'var(--mute)';
+T('qA',S.d.join(''),EM[S.d.join('')]?'var(--bad)':'');T('qC',S.mode>=3?'FL'+String(Math.round(S.alt/100)).padStart(3,'0'):'not sent');T('qI',S.mode>=4?HEX:'not sent');
+T('qV',S.mode<2?'Primary echo only':S.mode===2?'Code only':S.mode===3?'Code + altitude':'ID + code + altitude');syncOut()}
+function tag(ctx,t,x,y){const em=EM[t.sq],L=t.m>=4?[t.cs||'(no ID)',t.sq+' FL'+String(Math.round(t.fl/100)).padStart(3,'0'),t.hx]:t.m===3?[t.sq,'FL'+String(Math.round(t.fl/100)).padStart(3,'0')]:t.m===2?[t.sq]:[];
+if(em&&t.m>=2)L.push(em);if(t.own&&S.idt>0)L.push('IDENT');ctx.textAlign='left';ctx.font='11px system-ui';
+L.forEach((s,i)=>{ctx.fillStyle=em&&t.m>=2&&Math.floor(S.T*2)%2?'#ff6b6b':s==='IDENT'?'#ffa94d':'#7bd8a0';ctx.fillText(s,x+12,y-6+i*12)})}
+function draw(){const v=cssv(),{ctx,W,H}=M,R=Math.min(W,H)/2*.94,sc=R/60,cx=W/2,cy=H/2;ctx.clearRect(0,0,W,H);ctx.save();ctx.beginPath();ctx.arc(cx,cy,R,0,7);ctx.fillStyle=v('--card');ctx.fill();ctx.clip();
+ctx.lineWidth=1;ctx.strokeStyle='#245c3d';ctx.fillStyle='#4f9d73';ctx.font='11px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';
+for(let r=10;r<=60;r+=10){ctx.beginPath();ctx.arc(cx,cy,r*sc,0,7);ctx.stroke();ctx.fillText(r,cx+r*sc*.71+8,cy-r*sc*.71)}
+const all=[{...S,cs:S.cs,sq:S.d.join(''),fl:S.alt,m:S.mode,hx:HEX,own:true},...S.oth];
+all.forEach(t=>{const x=cx+t.x*sc,y=cy-t.y*sc,c=t.own?'#ffa94d':'#51cf66';ctx.strokeStyle=ctx.fillStyle=c;ctx.lineWidth=1.5;ctx.beginPath();
+if(t.m<2){ctx.moveTo(x-5,y);ctx.lineTo(x+5,y);ctx.moveTo(x,y-5);ctx.lineTo(x,y+5);ctx.stroke()}
+else if(t.m===4){ctx.moveTo(x,y-7);ctx.lineTo(x+7,y);ctx.lineTo(x,y+7);ctx.lineTo(x-7,y);ctx.closePath();ctx.stroke()}
+else{ctx.strokeRect(x-6,y-6,12,12);if(t.m===3){ctx.fillRect(x-2,y-2,4,4)}}
+if(t.own&&S.idt>0){ctx.beginPath();ctx.arc(x,y,13,0,7);ctx.stroke()}
+if(t.own&&S.mode>=2&&S.T%4<.6){ctx.globalAlpha=.5;ctx.beginPath();ctx.arc(x,y,10+(S.T%4)*30,0,7);ctx.stroke();ctx.globalAlpha=1}
+tag(ctx,t,x,y)});ctx.restore();ctx.strokeStyle=v('--line');ctx.lineWidth=2;ctx.beginPath();ctx.arc(cx,cy,R,0,7);ctx.stroke()}
+function pulses(){const v=cssv(),{ctx,W,H}=P;ctx.clearRect(0,0,W,H);ctx.font='10px system-ui';ctx.textBaseline='middle';ctx.textAlign='center';
+const ok=S.mode>=[2,3,4][S.ia],pl=8,pw=W-16,X=t=>pl+t/26*pw,yI=H*.28,yR=H*.82,note=s=>{ctx.fillStyle=v('--mute');ctx.textAlign='left';ctx.fillText(s,pl,H*.55);ctx.textAlign='center'};
+if(S.ia<2){ctx.fillStyle=v('--mute');ctx.textAlign='left';ctx.fillText('1030 MHz interrogation: P1, P2 (side-lobe), P3 at '+(S.ia?'21':'8')+' µs',pl,10);ctx.textAlign='center';
+[[0,'P1'],[2,'P2'],[S.ia?21:8,'P3']].forEach(([t,l])=>{ctx.fillStyle=v('--ink');ctx.fillRect(X(t)-3,yI-8,6,14);ctx.fillStyle=v('--mute');ctx.fillText(l,X(t),yI+14)})}
+if(S.ia<2&&!ok){note('No reply: '+(S.ia?'Mode C needs ALT':'transponder is OFF/STBY'));return}
+if(S.ia<2){const dg=S.d,names=['C1','A1','C2','A2','C4','A4','X','B1','D1','B2','D2','B4','D4'],g=gil(S.alt),bit=n=>n==='X'?0:S.ia?g[n]:(dg['ABCD'.indexOf(n[0])]>>{'1':0,'2':1,'4':2}[n[1]])&1;
+const p=(t,l,on,c)=>{ctx.fillStyle=on?c:v('--line');ctx.fillRect(X(t)-3,yR-(on?14:3),6,on?14:3);ctx.fillStyle=v('--mute');ctx.fillText(l,X(t),yR+11)};
+p(0,'F1',1,v('--acc'));names.forEach((n,i)=>p(1.45*(i+1),n,bit(n),v('--ok')));p(20.3,'F2',1,v('--acc'));if(S.idt>0)p(24.65,'SPI',1,v('--bad'));
+ctx.fillStyle=v('--mute');ctx.textAlign='left';ctx.fillText('1090 MHz reply · '+(S.ia?'Mode C: altitude code (Gillham)':'Mode A: code '+S.d.join('')),pl,H*.55);return}
+if(!ok){note('No Mode S reply: set the transponder to Mode S');return}
+const F=[['DF',5,'4'],['FS',3,'0'],['DR',5,'0'],['UM',6,'0'],['AC',13,'N='+Math.round((S.alt+1000)/25)],['AP',24,HEX]];let x=pl;
+ctx.fillStyle=v('--mute');ctx.textAlign='left';ctx.fillText('Mode S reply DF4 · 56 data bits after an 8 µs preamble',pl,10);
+F.forEach(([n,b,val],i)=>{const w=b/56*pw;ctx.strokeStyle=v('--acc');ctx.lineWidth=1.5;ctx.strokeRect(x,H*.35,w,H*.4);ctx.fillStyle=v('--ink');ctx.textAlign='center';ctx.fillText(n,x+w/2,H*.5);ctx.fillStyle=v('--mute');ctx.fillText(val,x+w/2,H*.66);x+=w});
+ctx.fillStyle=v('--mute');ctx.textAlign='left';ctx.fillText('AC = altitude, AP = address parity (carries the 24-bit address)',pl,H*.92)}
+document.querySelectorAll('[data-q]').forEach(b=>b.onclick=()=>{const[i,d]=b.dataset.q.split(':');S.d[i]=(S.d[i]+ +d+8)%8});
+document.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{S.d=[...b.dataset.c].map(Number)});
+$('mode').value='3';$('mode').onchange=e=>S.mode=+e.target.value;$('ia').onchange=e=>S.ia=+e.target.value;$('cs').oninput=e=>S.cs=e.target.value.toUpperCase().slice(0,8);$('idn').onclick=()=>{S.idt=18;if(S.task&&S.d.join('')===S.task.sq)S.idd=true};
+wire({ArrowLeft:['tgt',-5],ArrowRight:['tgt',5]},()=>{S.oth=JSON.parse(OTH);S.idt=0});
+function rnd(){const r=Math.random,oc=()=>Math.floor(r()*8),sq=[oc(),oc(),oc(),oc()].join(''),
+Ts=[{t:`Squawk ${sq}`,ck:'any'},{t:`Squawk ${sq} and ident`,ck:'any',id:1},{t:`Squawk ${sq}, stop altitude squawk`,ck:'a'},{t:`Select Mode S and squawk ${sq}`,ck:'s'},{t:`Squawk ${sq}, altitude on`,ck:'ac'},{t:'Squawk 7600',ck:'any',sq:'7600'}],k=Ts[Math.floor(r()*Ts.length)];
+k.sq=k.sq||sq;S.task=k;S.idd=false;S.d=[oc(),oc(),oc(),oc()];S.mode=[1,2,3][Math.floor(r()*3)];$('mode').value=S.mode;S.alt=100*Math.floor(r()*350);S.x=(r()-.5)*50;S.y=(r()-.5)*50;S.hdg=S.tgt=Math.floor(r()*36)*10;['alt','tgt'].forEach(i=>$(i).value=S[i])}
+$('rnd').onclick=rnd;rnd();run(step,()=>{ui();draw();pulses()});
+</script></body></html>
